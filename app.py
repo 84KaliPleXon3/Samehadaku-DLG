@@ -14,6 +14,7 @@ def query():
     if not request.args.get('_'):
         abort(404)
     que = request.args.get('_')
+    que = que.rstrip() + " subtitle"
     srch = requests.get(main_url, params={'s': que})
     results = re.findall(r"""<h3 class="post-title"><a href="(.+?)" title="(.+?)">.+</a></h3>""", srch.text, re.M|re.I)
     if len(results) == 0:
