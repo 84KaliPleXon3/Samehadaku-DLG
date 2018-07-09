@@ -68,15 +68,16 @@ def fetch():
 def extract():
     if not request.args.get('_'):
         abort(404)
-    dlink = request.args.get('_')
-    for _ in range(2):
-        try:
-            r = requests.get(dlink)
-        except Exception:
-            break
-        m = re.findall(r'''<a.*?href=".+?\?.=(aHR0c.+?)".*?_blank".*?>''', r.text, re.M|re.I)
-        if len(m) == 1:
-            dlink = base64.b64decode(m[0])
-        else:
-            break
+    dlink = request.args.get('_').encode()
+    if dlink.startswith(b'http'): 
+        for _ in range(2):
+            try:
+                r = requests.get(dlink)
+            except Exception:
+                break
+            m = re.findall(r'''<a.*?href=".+?\?.=(aHR0c.+?)".*?_blank".*?>''', r.text, re.M|re.I)
+            if len(m) == 1:
+                dlink = base64.b64decode(m[0])
+            else:
+                break
     return jsonify(url=dlink.decode())
