@@ -44,9 +44,16 @@ def fetch():
             'cols': 6
         }
     }
-    if len(links) not in set_:
-        return jsonify(success=False)
     len_ = len(links)
+    if len_ not in set_:
+        d = False
+        for k, v in set_.items():
+            if abs(k-len_) < 5:
+                len_ = k
+                d = True
+                break
+        if not d:
+            return jsonify(success=False)
     links = links[:len_-set_[len_]['trim']]
     links = {
             'mkv': zip(*[iter(links[:set_[len_]['mkv']])]*set_[len_]['cols']),
