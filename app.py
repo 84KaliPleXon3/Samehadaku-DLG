@@ -30,18 +30,41 @@ def fetch():
         return jsonify(success=False)
     dw_page = requests.get(url)
     links = re.findall(r'''<a.*?href="(.+?)".*?>(UF|CU|ZS1|GD|ZS2|SC|MU|ZS).*?</a>''', dw_page.text, re.M|re.I)
+    links = re.findall(r'''<a.*?href="(.+?)".*?>(UF|CU|ZS1|GD|ZS2|SC|MU|ZS).*?</a>''', dw_page.text, re.M|re.I)
     set_ = {
         68: {
-            'trim': 12,
+            'trim': 0,
             'mkv': 28,
+            'mkv_cols': 7,
             'mp4': 28,
-            'cols': 7
+            'mp4_cols': 7,
+            'x265': False,
         },
         60: {
-            'trim': 12,
+            'trim': 0,
             'mkv': 24,
+            'mkv_cols': 6,
             'mp4': 24,
-            'cols': 6
+            'mp4_cols': 6,
+            'x265': False,
+        },
+        86: {
+            'trim': 0,
+            'mkv': 28,
+            'mkv_cols': 7,
+            'mp4': 28,
+            'mp4_cols': 7,
+            'x265': 18,
+            'x265_cols': 6
+        },
+        78: {
+            'trim': 0,
+            'mkv': 28,
+            'mkv_cols': 6,
+            'mp4': 28,
+            'mp4_cols': 6,
+            'x265': 18,
+            'x265_cols': 6
         }
     }
     len_ = len(links)
@@ -53,18 +76,27 @@ def fetch():
                 d = True
                 break
         if not d:
-            return jsonify(success=False)
+            pdb.set_trace()
+            print('\\ unexpected things happened!')
+            sys.exit(-1)
     links = links[:len_-set_[len_]['trim']]
-    links = {
-            'mkv': zip(*[iter(links[:set_[len_]['mkv']])]*set_[len_]['cols']),
-            'mp4': zip(*[iter(links[set_[len_]['mp4']:])]*set_[len_]['cols'])
-            }
+    links_ = {}
+    offset = 0
+    links_['mkv'] = zip(*[iter(links[offset:set_[len_]['mkv']])]*set_[len_]['mkv_cols'])
+    offset += set_[len_]['mkv']
+    links_['mp4'] = zip(*[iter(links[offset:set_[len_]['mp4']+offset+1])]*set_[len_]['mp4_cols'])
+    offset += set_[len_]['mp4']
+    if set_[len_]['x265']:
+        links_['x265'] = zip(*[iter(links[offset:set_[len_]['x265']+offset+1])]*set_[len_]['x265_cols'])
     choices = []
+    links = links_
     for vtype, vlinks in links.items():
         if vtype == 'mkv':
             vq = (q for q in ['360p', '480p', '720p', '1080p'])
         elif vtype == 'mp4':
             vq = (q for q in ['360p', '480p', 'mp4hd', 'fullhd'])
+        elif vtype == 'x265':
+            vq = (q for q in ['480p', '720p', '1080p'])
         for links in vlinks:
             # pdb.set_trace()
             quality = next(vq)
