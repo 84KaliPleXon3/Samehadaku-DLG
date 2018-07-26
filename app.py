@@ -76,9 +76,7 @@ def fetch():
                 d = True
                 break
         if not d:
-            pdb.set_trace()
-            print('\\ unexpected things happened!')
-            sys.exit(-1)
+            return jsonify(success=False)
     links = links[:len_-set_[len_]['trim']]
     links_ = {}
     offset = 0
