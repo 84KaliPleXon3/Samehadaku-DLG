@@ -76,7 +76,7 @@ def fetch():
                 len_ = k
                 d = True
                 break
-        if d: # ! if not d, used only for debug
+        if not d:
             links = [l[0] for l in links]
             return jsonify(success=False, links=links)
     links = links[:len_-set_[len_]['trim']]
