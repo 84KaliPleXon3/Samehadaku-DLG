@@ -1,6 +1,7 @@
 import re
 import requests
 import base64
+from urllib.parse import urlparse
 from flask import *
 app = Flask(__name__)
 app.config['GITHUB'] = 'https://github.com/p4kl0nc4t/Samehadaku-DLG'
@@ -75,8 +76,9 @@ def fetch():
                 len_ = k
                 d = True
                 break
-        if not d:
-            return jsonify(success=False)
+        if d: # ! if not d, used only for debug
+            links = [l[0] for l in links]
+            return jsonify(success=False, links=links)
     links = links[:len_-set_[len_]['trim']]
     links_ = {}
     offset = 0
@@ -96,7 +98,6 @@ def fetch():
         elif vtype == 'x265':
             vq = (q for q in ['480p', '720p', '1080p'])
         for links in vlinks:
-            # pdb.set_trace()
             quality = next(vq)
             for link in links:
                 fappend = ["type: %s, quality: %s, server: %s" % (vtype, quality, link[1]), link[0]]
@@ -106,6 +107,10 @@ def fetch():
 def extract():
     if not request.args.get('_'):
         abort(404)
+    if not request.args.get('s'):
+        special = False
+    else:
+        special = True
     dlink = request.args.get('_').encode()
     if dlink.startswith(b'http'): 
         for _ in range(2):
@@ -118,4 +123,11 @@ def extract():
                 dlink = base64.b64decode(m[0])
             else:
                 break
-    return jsonify(url=dlink.decode())
+    if not special:
+        return jsonify(url=dlink.decode())
+    else:
+        l = urlparse(dlink.decode())
+        return jsonify(url=l.geturl(), text='%s - %s' % (l.netloc, l.path))
+
+if __name__ == "__main__":
+    app.run(debug=True)

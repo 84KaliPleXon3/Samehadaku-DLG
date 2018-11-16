@@ -1,168 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Samehadaku-DLG</title>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-	<script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js" integrity="sha384-3LK/3kTpDE/Pkp8gTNp2gR/2gOiwQ6QaO7Td0zV76UFJVhqLl4Vl3KL1We6q6wR9" crossorigin="anonymous"></script>
-	<style>
-		.container {
-			margin-top: 1.25rem !important;
-		}
-		.condensed-x {
-			padding-top: 0.6rem !important;
-			padding-bottom: 0.6rem !important;
-		}
-		* {
-			border-radius: 0 !important;
-		}
-	</style>
+    <title>Samehadaku-DLG</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js" integrity="sha384-3LK/3kTpDE/Pkp8gTNp2gR/2gOiwQ6QaO7Td0zV76UFJVhqLl4Vl3KL1We6q6wR9" crossorigin="anonymous"></script>
+    <style>
+        .container {
+            margin-top: 1.25rem !important;
+        }
+        .condensed-x {
+            padding-top: 0.6rem !important;
+            padding-bottom: 0.6rem !important;
+        }
+        * {
+            border-radius: 0 !important;
+        }
+    </style>
 </head>
 <body class="bg-dark">
 <div class="container">
-	<div id="alert_placeholder"></div>
-	<div class="card border-0 mb-3">
-		<div class="card-header bg-warning text-dark condensed-x">Status: <span id="statusbar">Idle</span></div>
-		<div class="card-body">
-			<h2 class="card-title">
-				Samehadaku-DLG
-			</h2>
-			<hr>
-			<p>
-				<form id="form1" onsubmit="return false;">
-					<div class="form-group row" id="search_box">
-						<div class="col-lg-10">
-							<input id="inputQue" type="text" placeholder="Enter Samehadaku search query" id="que" class="form-control" autofocus>
-						</div>
-						<div class="col-lg-2">
-							<button type="button" id="btnSubmitQue" class="btn btn-dark w-100">Query</button>
-						</div>
-					</div>
-					<div class="form-group" id="options_box" style="display:none;">
-						<label id="options_label"></label>
-						<div class="row">
-							<div class="col-lg-10">
-								<select class="form-control" id="options_select">
-								</select>
-							</div>
-							<div class="col-lg-2">
-								<button type="button" id="btnSelect" class="btn btn-dark w-100">Get download link</button>
-							</div>
-						</div>
-					</div>
-					<div class="form-group border p-3 text-center" id="vid_url_box" style="display:none;">
-						<h5><a target="_blank" id="vid_url"></a></h5>
-					</div>
-				</form>
-			</p>
-			<p class="card-text">
-				Samehadaku-DLG stands for Samehadaku Download Link Generator. It looks for a search query in Samehadaku website and returns a download link of the first search result. To begin shortly, type your search query in the above text box.
-			</p>
-			<p class="card-text">
-				If you had experienced a problem or if you want to re-query, you could <a href onclick="resetForm();return false;" id="btnReset">reset the form</a>. Please note that this tool may only work with the latest posts on Samehadaku.
-			</p>
-		</div>
-		<div class="card-footer">
-			Made with <i class="fa fa-heart"></i> by P4kL0nc4t for Weaboos. <em>Calm, it's <a href="{{ config['GITHUB'] }}">open source</a></em>.
-		</div>
-	</div>
+    <div id="alert_placeholder"></div>
+    <div class="card border-0 mb-3">
+        <div class="card-header bg-warning text-dark condensed-x">Status: <span id="statusbar">Idle</span></div>
+        <div class="card-body">
+            <h2 class="card-title">
+                Samehadaku-DLG
+            </h2>
+            <hr>
+            <p>
+                <form id="form1" onsubmit="return false;">
+                    <div class="form-group row" id="search_box">
+                        <div class="col-lg-10">
+                            <input id="inputQue" type="text" placeholder="Enter Samehadaku search query" id="que" class="form-control" autofocus>
+                        </div>
+                        <div class="col-lg-2">
+                            <button type="button" id="btnSubmitQue" class="btn btn-dark w-100">Query</button>
+                        </div>
+                    </div>
+                    <div class="form-group" id="options_box" style="display:none;">
+                        <label id="options_label"></label>
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <select class="custom-select" id="options_select">
+                                </select>
+                            </div>
+                            <div class="col-lg-2">
+                                <button type="button" id="btnSelect" class="btn btn-dark w-100">Get download link</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="llinks_box" style="display:none;">
+                        <select class="custom-select" id="llinks_select" size="10" multiple>
+                        </select>
+                        <button type="button" id="btnGoto" class="btn btn-dark w-100">Go to URL</button>
+                    </div>
+                    <div class="form-group border p-3 text-center" id="vid_url_box" style="display:none;">
+                        <h5><a target="_blank" id="vid_url"></a></h5>
+                    </div>
+                </form>
+            </p>
+            <p class="card-text">
+                Samehadaku-DLG stands for Samehadaku Download Link Generator. It looks for a search query in Samehadaku website and returns a download link of the first search result. To begin shortly, type your search query in the above text box.
+            </p>
+            <p class="card-text">
+                If you had experienced a problem or if you want to re-query, you could <a href onclick="resetForm();return false;" id="btnReset">reset the form</a>. Please note that this tool may only work with the latest posts on Samehadaku.
+            </p>
+        </div>
+        <div class="card-footer">
+            Made with <i class="fa fa-heart"></i> by P4kL0nc4t for Weaboos. <em>Calm, it's <a href="{{ config['GITHUB'] }}">open source</a></em>.
+        </div>
+    </div>
 </div>
 <script>
-	$(document).ready(function() {
-		$('#options_box').hide();
-		$('#vid_url_box').hide();
-	});
-	var loading_icon = "<i class=\"fas fa-circle-notch fa-spin\"></i>";
-	var idle = "Idle"
-	function setStatus(status) {
-		$('#statusbar').html(status);
-	}
-	function escapeHtml(text) {
-		'use strict';
-		return text.replace(/[\"&<>]/g, function (a) {
-			return { '"': '&quot;', '&': '&amp;', '<': '&lt;', '>': '&gt;' }[a];
-		});
-	}
-	function resetForm() {
-		$('#btnSubmitQue').prop('disabled', false);
-		$('#inputQue').val('');
-		$('#options_box').hide();
-		$('#search_box').show();
-		$('#vid_url_box').hide();
-		$('#btnSelect').prop('disabled', false);
-		setStatus(idle);
-	}
-	function showalert(message, alerttype) {
-		$('#alert_placeholder').append('<div id="alertdiv" class="alert alert-' +  alerttype + '"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>')
-		setTimeout(function() {
-			$('#alertdiv').fadeOut('slow');
-			$("#alertdiv").remove();
-		}, 10000);
-	}
-	$('#btnSubmitQue').click(function() {
-		if($('#inputQue').val().length < 5) {
-			showalert('Search query too short!', 'danger');
-			return;
-		}
-		setStatus(loading_icon + " Querying '" + escapeHtml($('#inputQue').val()) + "'");
-		$('#btnSubmitQue').prop('disabled', true);
-		var que = $('#inputQue').val();
-		$.get('q?_=' + escape(que), function(a, b) {
-			if(!a.success) {
-				showalert('No results were found :(', 'danger');
-				$('#btnSubmitQue').prop('disabled', false);
-				setStatus(idle);
-				return;
-			}
-			var c = confirm("I got '" + escapeHtml(a.result) + "', continue?");
-			if(!c) {
-				$('#btnSubmitQue').prop('disabled', false);
-				setStatus(idle);
-				return;
-			}
-			processURL(a);
-		});
-	});
-	function processURL(rObj) {
-		setStatus(loading_icon + " Fetching download links for '" + escapeHtml(rObj.result) + "'");
-		var url = rObj.url;
-		$.get('f?_=' + escape(url), function(a, b) {
-			if(!a.success) {
-				showalert('Unable to fetch download links :(', 'danger');
-				$('#btnSubmitQue').prop('disabled', false);
-				setStatus(idle);
-				return;
-			}
-			$('#options_select').html('');
-			$.each(a.choices, function(i, choice) {
-				$('#options_select').append($('<option>', {
-					value: choice[1],
-					text: choice[0]
-				}));
-			});
-			$('#options_label').html(escapeHtml(rObj.result));
-			$('#options_box').slideDown();
-			$('#search_box').slideUp();
-			setStatus(idle);
-		});
-	}
-	$('#btnSelect').click(function() {
-		var url = $('#options_select').val();
-		var txt = $('#options_select option:selected').text()
-		$('#btnSelect').prop('disabled', true);
-		setStatus(loading_icon + " Getting download link for '" + escapeHtml($('#options_label').text()) + "' (" + escapeHtml(txt) + ")");
-		$.get('e?_=' + escape(url), function(a,b) {
-			$('#vid_url_box').slideDown();
-			$('#vid_url').prop('href', a.url);
-			$('#vid_url').html(escapeHtml(a.url));
-			setStatus(idle);
-			$('#btnSelect').prop('disabled', false);
-		});
-	});
+    $(document).ready(function() {
+        $('#options_box').hide();
+        $('#vid_url_box').hide();
+        $('#llinks_box').hide();
+    });
+    var loading_icon = "<i class=\"fas fa-circle-notch fa-spin\"></i>";
+    var idle = "Idle"
+    function setStatus(status) {
+        $('#statusbar').html(status);
+    }
+    function escapeHtml(text) {
+        'use strict';
+        return text.replace(/[\"&<>]/g, function (a) {
+            return { '"': '&quot;', '&': '&amp;', '<': '&lt;', '>': '&gt;' }[a];
+        });
+    }
+    function resetForm() {
+        $('#btnSubmitQue').prop('disabled', false);
+        $('#inputQue').val('');
+        $('#options_box').hide();
+        $('#search_box').show();
+        $('#vid_url_box').hide();
+        $('#llinks_box').hide();
+        $('#llinks_select').html('');
+        $('#btnSelect').prop('disabled', false);
+        setStatus(idle);
+    }
+    function showalert(message, alerttype) {
+        $('#alert_placeholder').append('<div id="alertdiv" class="alert alert-' +  alerttype + '"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>')
+        setTimeout(function() {
+            $('#alertdiv').fadeOut('slow');
+            $("#alertdiv").remove();
+        }, 10000);
+    }
+    $('#btnSubmitQue').click(function() {
+        if($('#inputQue').val().length < 5) {
+            showalert('Search query too short!', 'danger');
+            return;
+        }
+        setStatus(loading_icon + " Querying '" + escapeHtml($('#inputQue').val()) + "'");
+        $('#btnSubmitQue').prop('disabled', true);
+        var que = $('#inputQue').val();
+        $.get('q?_=' + escape(que), function(a, b) {
+            if(!a.success) {
+                showalert('No results were found :(', 'danger');
+                $('#btnSubmitQue').prop('disabled', false);
+                setStatus(idle);
+                return;
+            }
+            var c = confirm("I got '" + escapeHtml(a.result) + "', continue?");
+            if(!c) {
+                $('#btnSubmitQue').prop('disabled', false);
+                setStatus(idle);
+                return;
+            }
+            processURL(a);
+        });
+    });
+    function processURL(rObj) {
+        setStatus(loading_icon + " Fetching download links for '" + escapeHtml(rObj.result) + "'");
+        var url = rObj.url;
+        $.get('f?_=' + escape(url), function(a, b) {
+            if(!a.success && !a.links) {
+                showalert('Unable to fetch download links :(', 'danger');
+                $('#btnSubmitQue').prop('disabled', false);
+                setStatus(idle);
+                return;
+            } else if(!a.success) {
+                c = confirm('Unable to fetch download links :( Do you want me to show you everything that we\'ve got?');
+                if(c) {
+                    ind = a.links.length;
+                    fetched = 0
+                    setStatus(loading_icon + ' Trying to fetch all available links');
+                    $.each(a.links, function(i, link) {
+                        $.get('e?s=y&_=' + escape(link), function(a, b) {
+                            if(a.url) {
+                                $('#llinks_box').slideDown();
+                                $('#llinks_select').append($('<option>', {
+                                    text: escapeHtml(a.text),
+                                    value: escapeHtml(a.url)
+                                }));
+                                fetched += 1;
+                                if(fetched == ind) {
+                                    setStatus(idle);
+                                } else {
+                                    setStatus(loading_icon + ' Trying to fetch all available links');
+                                }
+                            }
+                        });
+                    });
+                }
+                return;
+            }
+            $('#options_select').html('');
+            $.each(a.choices, function(i, choice) {
+                $('#options_select').append($('<option>', {
+                    value: choice[1],
+                    text: choice[0]
+                }));
+            });
+            $('#options_label').html(escapeHtml(rObj.result));
+            $('#options_box').slideDown();
+            $('#search_box').slideUp();
+            setStatus(idle);
+        });
+    }
+    $('#btnGoto').click(function() {
+        var url = $('#llinks_select').val();
+        if(url.length == 0) {
+            alert('Please select at least 1 url!');
+        }
+        $.each(url, function(i, link) {
+            window.open(url, '_blank');
+        });
+    });
+    $('#btnSelect').click(function() {
+        var url = $('#options_select').val();
+        var txt = $('#options_select option:selected').text()
+        $('#btnSelect').prop('disabled', true);
+        setStatus(loading_icon + " Getting download link for '" + escapeHtml($('#options_label').text()) + "' (" + escapeHtml(txt) + ")");
+        $.get('e?_=' + escape(url), function(a,b) {
+            $('#vid_url_box').slideDown();
+            $('#vid_url').prop('href', a.url);
+            $('#vid_url').html(escapeHtml(a.url));
+            setStatus(idle);
+            $('#btnSelect').prop('disabled', false);
+        });
+    });
 </script>
 </body>
 </html>
