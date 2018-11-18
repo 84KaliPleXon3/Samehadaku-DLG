@@ -135,7 +135,11 @@ def extract():
     if not special:
         return jsonify(url=dlink)
     else:
+<<<<<<< HEAD
         l = urlparse(dlink)
+=======
+        l = urlparse(dlink
+>>>>>>> 3719d9303d690ac23aff540031c4fcd344c723fa
         return jsonify(url=l.geturl(), text='%s - %s' % (l.netloc, l.path))
 
 if __name__ == "__main__":
