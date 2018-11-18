@@ -1,12 +1,18 @@
 import re
 import requests
 import base64
+import random
+from hashlib import md5 
 from urllib.parse import urlparse
 from flask import *
+
 app = Flask(__name__)
+app.secret_key = ''.join(random.choice(list('abCdE23456')) for _ in range(10))
 app.config['GITHUB'] = 'https://github.com/p4kl0nc4t/Samehadaku-DLG'
 dmn = 'www.samehadaku.tv'
 main_url = 'https://' + dmn + '/'
+link_extraction_caches = dict()
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -112,21 +118,24 @@ def extract():
     else:
         special = True
     dlink = request.args.get('_').encode()
-    if dlink.startswith(b'http'): 
-        for _ in range(2):
-            try:
-                r = requests.get(dlink)
-            except Exception:
-                break
-            m = re.findall(r'''<a.*?href=".+?\?.=(aHR0c.+?)".*?_blank".*?>''', r.text, re.M|re.I)
-            if len(m) == 1:
-                dlink = base64.b64decode(m[0])
-            else:
-                break
-    if not special:
-        return jsonify(url=dlink.decode())
+    if dlink in link_extraction_caches:
+        dlink = link_extraction_caches
     else:
-        l = urlparse(dlink.decode())
+        if dlink.startswith(b'http'): 
+            for _ in range(2):
+                try:
+                    r = requests.get(dlink)
+                except Exception:
+                    break
+                m = re.findall(r'''<a.*?href=".+?\?.=(aHR0c.+?)".*?_blank".*?>''', r.text, re.M|re.I)
+                if len(m) == 1:
+                    dlink = base64.b64decode(m[0]).decode()
+                else:
+                    break
+    if not special:
+        return jsonify(url=dlink)
+    else:
+        l = urlparse(dlink
         return jsonify(url=l.geturl(), text='%s - %s' % (l.netloc, l.path))
 
 if __name__ == "__main__":
