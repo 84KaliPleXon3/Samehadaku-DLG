@@ -5,7 +5,7 @@ class samehadakuParser:
         ['480p', '720p', '1080p']
     ]
     layoutConf = {
-        68: {
+        83: {
             'mkv': [[7, 7, 6, 6], 0],
             'mp4': [[7, 7, 6, 6], 1],
             'x265': [[7, 7, 7], 2]
@@ -15,7 +15,7 @@ class samehadakuParser:
     def __init__(self, links):
         self.links = links
         self.corrected = False
-        self.results = {}
+        self.results = []
         if len(links) in self.layoutConf:
             self.usedLConf = self.layoutConf[len(links)]
         else:
@@ -33,7 +33,7 @@ class samehadakuParser:
         for vtype in lc:
             t_lc = lc[vtype]
             for vquality in self.qualityConf[t_lc[1]]:
-                amount = t_lc[self.qualityConf[t_lc[1]].index(vquality)]
+                amount = t_lc[0][self.qualityConf[t_lc[1]].index(vquality)]
                 links = self.links[amount:offset+amount]
                 for link in links:
                     self.results.append({
@@ -44,3 +44,10 @@ class samehadakuParser:
                     })
                 offset += amount
         return
+
+    def parseResults(self):
+        formatted_results = []
+        for result in self.results:
+            formatted_results.append(['type: %s, quality %s, server: %s' % (
+                result['type'], result['quality'], result['server']), result['url']])
+        return formatted_results
