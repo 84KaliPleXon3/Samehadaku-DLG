@@ -52,7 +52,7 @@ class samehadakuParser:
             t_lc = lc[vtype]
             for vquality in self.qualityConf[t_lc[1]]:
                 amount = t_lc[0][self.qualityConf[t_lc[1]].index(vquality)]
-                links = self.links[amount:offset+amount]
+                links = self.links[offset:offset+amount]
                 for link in links:
                     self.results.append({
                         'type': vtype,
